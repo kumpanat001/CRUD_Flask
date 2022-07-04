@@ -1,0 +1,227 @@
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500&family=Sriracha&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+            font-family: 'Sriracha', cursive;
+        }
+    </style>
+</head>
+{% if session['username'] == 'admin' %}
+
+<body class="">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="">
+                <h1><img src="https://www.donausguard.com/img/Donaus%20LOGO2.png" alt="" width="180px" height="60"
+                        class="d-inline-block align-text-top"></h1>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            </div>
+        </div>
+    </nav><br>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
+                style="width: 100%; height:100%; border-radius:10px;">
+                <h3 class="text-center">เมนู</h3>
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="{{url_for('home')}}" class="nav-link text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-wrench-adjustable" viewBox="0 0 16 16">
+                                <path
+                                    d="M16 4.5a4.492 4.492 0 0 1-1.703 3.526L13 5l2.959-1.11c.027.2.041.403.041.61Z" />
+                                <path
+                                    d="M11.5 9c.653 0 1.273-.139 1.833-.39L12 5.5 11 3l3.826-1.53A4.5 4.5 0 0 0 7.29 6.092l-6.116 5.096a2.583 2.583 0 1 0 3.638 3.638L9.908 8.71A4.49 4.49 0 0 0 11.5 9Zm-1.292-4.361-.596.893.809-.27a.25.25 0 0 1 .287.377l-.596.893.809-.27.158.475-1.5.5a.25.25 0 0 1-.287-.376l.596-.893-.809.27a.25.25 0 0 1-.287-.377l.596-.893-.809.27-.158-.475 1.5-.5a.25.25 0 0 1 .287.376ZM3 14a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
+                            </svg>
+                            ตั้งค่า ID ต่างๆ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{url_for('admin')}}" class="nav-link text-center active" aria-current="page"
+                            style="background-color: #17c4dc;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                                <path fill-rule="evenodd"
+                                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                            </svg>
+                            จัดการสมาชิก
+                        </a>
+                    </li>
+                </ul>
+                <hr>
+                <a href="{{url_for('logout')}}" class="text-center">
+                    <button class="btn btn-danger" style="width: 100%;" type="submit">ออกจากระบบ</button>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success mb-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                เพิ่มข้อมูล
+            </button>
+
+             <!-- flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{category}} alert-dismissible fade show text-center" role="alert">
+                {{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}  
+            {% endwith %}
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <h5 class="modal-title" id="exampleModalLabel">เพิ่มข้อมูล</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="{{url_for('add_user')}}" method="post">
+                            <div class="modal-body">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control rounded-" name="username" required>
+                                    <label for="floatingInput">Username</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control rounded-4" name="password" required>
+                                    <label for="floatingInput">Password</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control rounded-4" name="email" required>
+                                    <label for="floatingInput">Email</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" name="submit" class="btn btn-success">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-dark table-hover" style="word-wrap: break-word;" width="100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Update</th>
+                            <th scope="col">Dalete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in users %}
+                        <tr>
+                            <td>{{ row.0}}</td>
+                            <td>{{ row.1}}</td>
+                            <td>{{ row.3}}</td>
+                            <td><button type='button' class='btn btn-warning' data-bs-toggle="modal"
+                                    data-bs-target="#modalEdit{{ row.0 }}">แก้ไข</button></td>
+                            <!-- Modal -->
+                            <div class="modal fade" id="modalEdit{{ row.0 }}" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">แก้ไขข้อมูล</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{url_for('update_user')}}" method="post">
+                                            <div class="modal-body">
+                                                <div class="form-floating mb-3">
+                                                    <input type="hidden" name="id" value="{{ row.0 }}" required>
+                                                    <input type="text" class="form-control rounded-" name="username"
+                                                        id="username" value="{{ row.1 }}" required>
+                                                    <label for="floatingInput">Username</label>
+                                                </div>
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control rounded-4" name="email"
+                                                        id="email" value="{{ row.3 }}" required>
+                                                    <label for="floatingInput">Email</label>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" name="submit" class="btn btn-success">Save
+                                                    changes</button>
+                                            </div>
+                                            <td><a href="/delete_user/{{ row.0 }}"><button type='button'
+                                                        class='btn btn-danger'
+                                                        onclick="return confirm('ต้องการลบข้อมูลหรือไม่?')">ลบ</button></a>
+                                            </td>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <script LANGUAGE='JavaScript'>
+            window.alert('กรุณาเข้าสู่ระบบ');
+            window.location.href = "{{url_for('login')}}";
+        </script>
+        {% endif %}
+    </div>
+
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+    <script rsc="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+</body>
+
+</html>
